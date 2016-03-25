@@ -1,6 +1,5 @@
-//Woo! I added a comment to the code!
-// Mee too!
-//Woo! I also added a comment to the code!
+//Lookit! There's a whole new comment here!
+
 package cs4347.jdbcProject.ecomm.dao;
 
 import java.sql.Connection;
