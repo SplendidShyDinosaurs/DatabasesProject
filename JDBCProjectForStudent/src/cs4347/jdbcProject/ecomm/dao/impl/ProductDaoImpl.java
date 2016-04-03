@@ -82,6 +82,7 @@ public class ProductDaoImpl implements ProductDAO
 			statement.setString(2, product.getProdDescription());
 			statement.setInt(3, product.getProdCategory());
 			statement.setString(4, product.getProdUPC());
+			statement.setLong(5, product.getId());
 
 			return statement.executeUpdate();
 			
@@ -117,7 +118,7 @@ public class ProductDaoImpl implements ProductDAO
 		try{
 			if(category < 0){ throw new DAOException("Cannot retrieve a product with a "); }
 		
-			statement = connection.prepareStatement("SELECT id, prodName, prodDescription, prodCategory, prodUPC FROM product where category = ?;");
+			statement = connection.prepareStatement("SELECT id, prodName, prodDescription, prodCategory, prodUPC FROM product where prodCategory = ?;");
 			statement.setInt(1, category);
 			ResultSet set = statement.executeQuery();
 			
