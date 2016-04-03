@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 
 import cs4347.jdbcProject.ecomm.dao.AddressDAO;
 import cs4347.jdbcProject.ecomm.entity.Address;
-import cs4347.jdbcProject.ecomm.testing.DataSourceManager;
+//import cs4347.jdbcProject.ecomm.testing.DataSourceManager;
 import cs4347.jdbcProject.ecomm.util.DAOException;
 
 public class AddressDaoImpl implements AddressDAO
@@ -20,7 +20,7 @@ public class AddressDaoImpl implements AddressDAO
 	public Address create(Connection connection, Address address, Long customerID) throws SQLException, DAOException {		
 		PreparedStatement statement = null;
 		try{
-			// if(address.getAddress1() != null){ throw new DAOException("Cannot insert an address with a non-null id"); }
+			if(customerID == null){ throw new DAOException("Cannot insert an address with a null id"); }
 			
 			statement = connection.prepareStatement("INSERT INTO ADDRESS (address1, address2, city, state, zipcode, customerID) VALUES(?,?,?,?,?,?);");
 			statement.setString(1, address.getAddress1());
@@ -30,18 +30,12 @@ public class AddressDaoImpl implements AddressDAO
 			statement.setString(5, address.getZipcode());
 			statement.setLong(6, customerID);
 			statement.executeUpdate();
-			
-			/*ResultSet keys = statement.getGeneratedKeys();
-			keys.next();
-			int newKey = keys.getInt(1);
-			customer.setId((long) newKey);*/
-			
 			return address;
+			
 		}catch(SQLException e){
 			throw new DAOException(e.getMessage());
 		}finally{
 			if(statement != null && !statement.isClosed()){ statement.close(); }
-			//if(connection != null && !connection.isClosed()){ connection.close(); }
 		}
 	}
 
