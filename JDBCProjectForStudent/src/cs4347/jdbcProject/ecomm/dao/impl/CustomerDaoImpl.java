@@ -44,7 +44,30 @@ public class CustomerDaoImpl implements CustomerDAO
 
 	@Override
 	public Customer retrieve(Connection connection, Long id) throws SQLException, DAOException {
-		return null;
+		PreparedStatement statement = null;
+		try{
+			if(id == null){ throw new DAOException("Cannot retrieve a customer with a null id"); }
+			
+			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, dob, email FROM customer where id = ?;");
+			statement.setLong(1, id);
+			
+			ResultSet result = statement.executeQuery();
+			if(!result.next()) { return null; }
+			
+			Customer customer = new Customer();
+			customer.setId(result.getLong("id"));
+			customer.setFirstName(result.getString("firstName"));
+			customer.setLastName(result.getString("lastName"));
+			customer.setGender(result.getString("gender").charAt(0));
+			customer.setDob(result.getDate("dob"));
+			customer.setEmail(result.getString("email"));
+			
+			return customer;
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally{
+			if(statement != null && !statement.isClosed()){ statement.close(); }
+		}
 	}
 
 	@Override
