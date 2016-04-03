@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import cs4347.jdbcProject.ecomm.dao.CustomerDAO;
@@ -113,15 +114,66 @@ public class CustomerDaoImpl implements CustomerDAO
 
 	@Override
 	public List<Customer> retrieveByZipCode(Connection connection, String zipCode) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement statement = null;
+		List<Customer> result = new ArrayList<Customer>();
+		try{
+			if(zipCode == null){ throw new DAOException("Cannot retrieve a customer with a null zipcode"); }
+		
+			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, dob, email FROM customer where zipcode = ?;");
+			statement.setString(1, zipCode);
+			ResultSet set = statement.executeQuery();
+			
+			while(set.next()) {
+			
+				Customer customer = new Customer();
+				customer.setId(set.getLong("id"));
+				customer.setFirstName(set.getString("firstName"));
+				customer.setLastName(set.getString("lastName"));
+				customer.setGender(set.getString("gender").charAt(0));
+				customer.setDob(set.getDate("dob"));
+				customer.setEmail(set.getString("email"));
+				result.add(customer);
+			}
+			
+			return result;
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally{
+			if(statement != null && !statement.isClosed()){ statement.close(); }
+		}
 	}
 
 	@Override
 	public List<Customer> retrieveByDOB(Connection connection, Date startDate, Date endDate)
 			throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement statement = null;
+		List<Customer> result = new ArrayList<Customer>();
+		try{
+			if(startDate == null || endDate == null){ throw new DAOException("Cannot retrieve a customer with a null date"); }
+		
+			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, email FROM customer where dob >= ? AND dob <= ?;");
+			statement.setDate(1, startDate);
+			statement.setDate(2, endDate);
+			ResultSet set = statement.executeQuery();
+			
+			while(set.next()) {
+			
+				Customer customer = new Customer();
+				customer.setId(set.getLong("id"));
+				customer.setFirstName(set.getString("firstName"));
+				customer.setLastName(set.getString("lastName"));
+				customer.setGender(set.getString("gender").charAt(0));
+				customer.setDob(set.getDate("dob"));
+				customer.setEmail(set.getString("email"));
+				result.add(customer);
+			}
+			
+			return result;
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally{
+			if(statement != null && !statement.isClosed()){ statement.close(); }
+		}
 	}
 	
 }
