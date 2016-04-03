@@ -82,11 +82,15 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 	@Override
 	public Customer retrieve(Long id) throws SQLException, DAOException {
 		CustomerDAO customerDAO = new CustomerDaoImpl();
+		AddressDAO addressDAO = new AddressDaoImpl();
+		CreditCardDAO creditCardDAO = new CreditCardDaoImpl();
 		Connection connection = dataSource.getConnection();
 		
 		try {
 			connection.setAutoCommit(false);
 			Customer cust = customerDAO.retrieve(connection, id);
+			addressDAO.retrieveForCustomerID(connection, id);
+			creditCardDAO.retrieveForCustomerID(connection, id);
 			connection.commit();
 			return cust;
 		}
@@ -106,14 +110,55 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 
 	@Override
 	public int update(Customer customer) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		Connection connection = dataSource.getConnection();
+		
+		try {
+			connection.setAutoCommit(false);
+			int numUpdates = customerDAO.update(connection, customer);
+			return numUpdates;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
 	public int delete(Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		AddressDAO addressDAO = new AddressDaoImpl();
+		CreditCardDAO creditCardDAO = new CreditCardDaoImpl();
+
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			int value = customerDAO.delete(connection, id);
+			addressDAO.deleteForCustomerID(connection, id);
+		    creditCardDAO.deleteForCustomerID(connection, id);
+			connection.commit();
+			return value;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
