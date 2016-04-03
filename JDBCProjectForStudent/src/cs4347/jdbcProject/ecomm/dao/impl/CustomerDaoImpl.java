@@ -39,26 +39,53 @@ public class CustomerDaoImpl implements CustomerDAO
 			throw new DAOException(e.getMessage());
 		}finally{
 			if(statement != null && !statement.isClosed()){ statement.close(); }
-			//if(connection != null && !connection.isClosed()){ connection.close(); }
 		}
 	}
 
 	@Override
 	public Customer retrieve(Connection connection, Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int update(Connection connection, Customer customer) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement = null;
+		try{
+			if(customer.getId() == null){ throw new DAOException("Cannot update a customer with a null id"); }
+			
+			statement = connection.prepareStatement("UPDATE customer SET firstName = ?, lastName = ?, gender = ?, dob = ?, email = ? WHERE id = ?;");
+			statement.setString(1, customer.getFirstName());
+			statement.setString(2, customer.getLastName());
+			statement.setString(3, String.valueOf(customer.getGender()));
+			statement.setDate(4, customer.getDob());
+			statement.setString(5, customer.getEmail());
+			statement.setLong(6, customer.getId());
+
+			return statement.executeUpdate();
+			
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally{
+			if(statement != null && !statement.isClosed()){ statement.close(); }
+		}
 	}
 
 	@Override
 	public int delete(Connection connection, Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement statement = null;
+		try{
+			if(id == null){ throw new DAOException("Cannot delete a customer with a null id"); }
+			
+			statement = connection.prepareStatement("DELETE FROM customer WHERE ID = ?;");
+			statement.setLong(1, id);
+
+			return statement.executeUpdate();
+			
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally{
+			if(statement != null && !statement.isClosed()){ statement.close(); }
+		}
 	}
 
 	@Override
