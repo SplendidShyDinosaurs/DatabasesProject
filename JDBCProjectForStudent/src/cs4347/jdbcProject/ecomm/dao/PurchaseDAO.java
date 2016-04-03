@@ -16,7 +16,7 @@ public interface PurchaseDAO
 	/**
 	 * The create method must throw a DAOException if the 
 	 * given Purchase has a non-null ID. The create method must 
-	 * return the same Purcahse with the ID attribute set to the
+	 * return the same Purchase with the ID attribute set to the
 	 * value set by the application's auto-increment primary key column. 
 	 * @throws DAOException if the given Purchase has a non-null id.
 	 */

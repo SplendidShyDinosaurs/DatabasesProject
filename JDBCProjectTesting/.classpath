@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.33-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JDBCProjectForStudent"/>
-	<classpathentry kind="lib" path="C:/Users/User/Documents/DatabasesProject/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="/Users/davidzweig/Documents/DatabasesProject/junit-4.12.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
