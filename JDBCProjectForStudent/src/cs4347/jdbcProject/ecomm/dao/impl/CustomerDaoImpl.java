@@ -119,7 +119,7 @@ public class CustomerDaoImpl implements CustomerDAO
 		try{
 			if(zipCode == null){ throw new DAOException("Cannot retrieve a customer with a null zipcode"); }
 		
-			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, dob, email FROM customer where zipcode = ?;");
+			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, dob, email FROM customer JOIN address WHERE zipcode = ?;");
 			statement.setString(1, zipCode);
 			ResultSet set = statement.executeQuery();
 			
@@ -150,7 +150,7 @@ public class CustomerDaoImpl implements CustomerDAO
 		List<Customer> result = new ArrayList<Customer>();
 		try{
 			if(startDate == null || endDate == null){ throw new DAOException("Cannot retrieve a customer with a null date"); }
-		
+			
 			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, email FROM customer where dob >= ? AND dob <= ?;");
 			statement.setDate(1, startDate);
 			statement.setDate(2, endDate);
