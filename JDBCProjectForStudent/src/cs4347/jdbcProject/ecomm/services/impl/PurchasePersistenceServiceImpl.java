@@ -1,5 +1,6 @@
 package cs4347.jdbcProject.ecomm.services.impl;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,9 +9,11 @@ import javax.sql.DataSource;
 import cs4347.jdbcProject.ecomm.dao.AddressDAO;
 import cs4347.jdbcProject.ecomm.dao.CreditCardDAO;
 import cs4347.jdbcProject.ecomm.dao.CustomerDAO;
+import cs4347.jdbcProject.ecomm.dao.PurchaseDAO;
 import cs4347.jdbcProject.ecomm.dao.impl.AddressDaoImpl;
 import cs4347.jdbcProject.ecomm.dao.impl.CreditCardDaoImpl;
 import cs4347.jdbcProject.ecomm.dao.impl.CustomerDaoImpl;
+import cs4347.jdbcProject.ecomm.dao.impl.PurchaseDaoImpl;
 import cs4347.jdbcProject.ecomm.entity.Address;
 import cs4347.jdbcProject.ecomm.entity.CreditCard;
 import cs4347.jdbcProject.ecomm.entity.Customer;
@@ -39,7 +42,7 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 		Connection connection = dataSource.getConnection();
 		try {
 			connection.setAutoCommit(false);
-			Purchase purch = DAO.create(connection, purchase);
+			Purchase purch = purchaseDAO.create(connection, purchase);
 			Long purchID = purch.getId();
 
 			//if (cust.getAddress() == null) {
