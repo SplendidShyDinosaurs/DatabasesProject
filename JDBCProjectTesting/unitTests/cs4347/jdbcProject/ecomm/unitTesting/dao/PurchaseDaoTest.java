@@ -19,7 +19,7 @@ import cs4347.jdbcProject.ecomm.testing.DataSourceManager;
 public class PurchaseDaoTest
 {
 	// Need current customer ID from table CUSTOMER
-	Long customerID = 1l;
+	Long customerID = 34l;
 	// Need current product ID from table PRODUCT
 	Long productID = 1l;
 	
@@ -30,7 +30,7 @@ public class PurchaseDaoTest
 		Connection connection = dataSource.getConnection();
 		PurchaseDAO pdao = new PurchaseDaoImpl();
 		
-		List<Purchase> purchases = pdao.retrieveForCustomerID(connection, customerID);
+		List<Purchase> purchases = pdao.retrieveForCustomerID(connection, (long)34);
 		assertTrue(purchases.size() >= 1);
 
 		connection.close();

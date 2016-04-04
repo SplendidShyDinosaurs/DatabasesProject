@@ -19,8 +19,8 @@ import cs4347.jdbcProject.ecomm.testing.DataSourceManager;
 public class PurchasePersistenceServiceTest
 {
 	// Must be existing Customer and Product IDs
-	Long customerID = 2l;
-	Long productID = 2l;
+	Long customerID = 34l;
+	Long productID = 90l;
 
 	@Test
 	public void testCreate() throws Exception

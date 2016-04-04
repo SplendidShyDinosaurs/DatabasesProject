@@ -119,7 +119,6 @@ public class PurchaseDaoImpl implements PurchaseDAO
 		List<Purchase> result = new ArrayList<Purchase>();
 		try{
 			if(customerID == null){ throw new DAOException("Cannot retrieve a purchase with a null id"); }
-			
 			statement = connection.prepareStatement("SELECT id, productID, purchaseDate, purchaseAmount FROM purchase WHERE customerID = ?;");
 			statement.setLong(1, customerID);
 			
