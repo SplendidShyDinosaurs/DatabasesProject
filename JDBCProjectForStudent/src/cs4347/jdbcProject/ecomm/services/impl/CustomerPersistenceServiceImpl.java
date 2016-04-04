@@ -163,13 +163,49 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 
 	@Override
 	public List<Customer> retrieveByZipCode(String zipCode) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			List<Customer> list = customerDAO.retrieveByZipCode(connection, zipCode);
+			connection.commit();
+			return list;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
 	public List<Customer> retrieveByDOB(Date startDate, Date endDate) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			List<Customer> list = customerDAO.retrieveByDOB(connection, startDate, endDate);
+			connection.commit();
+			return list;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 }

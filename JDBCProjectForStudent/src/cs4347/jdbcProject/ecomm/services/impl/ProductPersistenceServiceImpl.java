@@ -6,17 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import cs4347.jdbcProject.ecomm.dao.AddressDAO;
-import cs4347.jdbcProject.ecomm.dao.CreditCardDAO;
-import cs4347.jdbcProject.ecomm.dao.CustomerDAO;
 import cs4347.jdbcProject.ecomm.dao.ProductDAO;
-import cs4347.jdbcProject.ecomm.dao.impl.AddressDaoImpl;
-import cs4347.jdbcProject.ecomm.dao.impl.CreditCardDaoImpl;
-import cs4347.jdbcProject.ecomm.dao.impl.CustomerDaoImpl;
 import cs4347.jdbcProject.ecomm.dao.impl.ProductDaoImpl;
-import cs4347.jdbcProject.ecomm.entity.Address;
-import cs4347.jdbcProject.ecomm.entity.CreditCard;
-import cs4347.jdbcProject.ecomm.entity.Customer;
 import cs4347.jdbcProject.ecomm.entity.Product;
 import cs4347.jdbcProject.ecomm.services.ProductPersistenceService;
 import cs4347.jdbcProject.ecomm.util.DAOException;
