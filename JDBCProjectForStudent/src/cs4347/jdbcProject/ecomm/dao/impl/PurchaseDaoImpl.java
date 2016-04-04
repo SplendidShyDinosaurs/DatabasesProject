@@ -74,6 +74,7 @@ public class PurchaseDaoImpl implements PurchaseDAO
 	@Override
 	public int update(Connection connection, Purchase purchase) throws SQLException, DAOException {
 		PreparedStatement statement = null;
+		
 		try{
 			if(purchase.getId() == null){ throw new DAOException("Cannot update a purchase with a null id"); }
 			
@@ -83,7 +84,7 @@ public class PurchaseDaoImpl implements PurchaseDAO
 			statement.setLong(3, purchase.getCustomerID());
 			statement.setDate(4, purchase.getPurchaseDate());
 			statement.setDouble(5, purchase.getPurchaseAmount());
-
+			statement.setLong(6, purchase.getId());
 			return statement.executeUpdate();
 			
 		}catch(SQLException e){
@@ -119,14 +120,14 @@ public class PurchaseDaoImpl implements PurchaseDAO
 		try{
 			if(customerID == null){ throw new DAOException("Cannot retrieve a purchase with a null id"); }
 			
-			statement = connection.prepareStatement("SELECT id, productID, purchaseDate, purchaseAmount FROM purchase where customerID = ?;");
+			statement = connection.prepareStatement("SELECT id, productID, purchaseDate, purchaseAmount FROM purchase WHERE customerID = ?;");
 			statement.setLong(1, customerID);
 			
 			ResultSet set = statement.executeQuery();
-			if(!set.next()) { return null; }
+			if(!set.next()){ return null; }
 			
 			while(set.next()){
-				
+			
 				Purchase purchase = new Purchase();
 				purchase.setId(set.getLong("id"));
 				purchase.setProductID(set.getLong("productID"));

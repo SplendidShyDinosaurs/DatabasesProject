@@ -67,7 +67,7 @@ public class PurchaseDaoTest
 
 		PurchaseDAO pdao = new PurchaseDaoImpl();
 		
-		Purchase purchase = buildPurchase(customerID, productID);
+		Purchase purchase = buildPurchase((long)34, (long)9);
 		Purchase purchase2 = pdao.create(connection, purchase);
 		purchase2.setPurchaseAmount(123.0);
 		pdao.update(connection, purchase2);

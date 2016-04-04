@@ -43,10 +43,10 @@ public class AddressDaoTest
 	{
 		DataSource ds = DataSourceManager.getDataSource();
 		Connection connection = ds.getConnection();
-		
 		AddressDAO dao = new AddressDaoImpl();
-
+		System.out.println(customerID);
 		Address addr = dao.retrieveForCustomerID(connection, customerID);
+		
 		assertNotNull(addr);
 		assertNotNull(addr.getAddress1());
 		assertNotNull(addr.getCity());
@@ -65,8 +65,8 @@ public class AddressDaoTest
 		connection.setAutoCommit(false);
 		
 		AddressDAO dao = new AddressDaoImpl();
-
 		Address addr = dao.retrieveForCustomerID(connection, customerID);
+	
 		assertNotNull(addr);
 		dao.deleteForCustomerID(connection, customerID);
 		Address addr2 = dao.retrieveForCustomerID(connection, customerID);
