@@ -56,6 +56,7 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 		try {
 			connection.setAutoCommit(false);
 			Purchase purchase = purchaseDAO.retrieve(connection, id);
+			connection.commit();
 			return purchase;
 		}
 		catch (Exception ex) {
@@ -80,6 +81,7 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 		try {
 			connection.setAutoCommit(false);
 			int numUpdates = purchaseDAO.update(connection, purchase);
+			connection.commit();
 			return numUpdates;
 		}
 		catch (Exception ex) {
@@ -127,7 +129,9 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 		
 		try {
 			connection.setAutoCommit(false);
-			return purchaseDAO.retrieveForCustomerID(connection, customerID);
+			List<Purchase> list = purchaseDAO.retrieveForCustomerID(connection, customerID);
+			connection.commit();
+			return list;
 		}
 		catch (Exception ex) {
 			connection.rollback();
@@ -150,7 +154,9 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 		
 		try {
 			connection.setAutoCommit(false);
-			return purchaseDAO.retrievePurchaseSummary(connection, customerID);
+			PurchaseSummary summary = purchaseDAO.retrievePurchaseSummary(connection, customerID);
+			connection.commit();
+			return summary;
 		}
 		catch (Exception ex) {
 			connection.rollback();
@@ -173,7 +179,9 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 		
 		try {
 			connection.setAutoCommit(false);
-			return purchaseDAO.retrieveForProductID(connection, productID);
+			List<Purchase> list = purchaseDAO.retrieveForProductID(connection, productID);
+			connection.commit();
+			return list;
 		}
 		catch (Exception ex) {
 			connection.rollback();
