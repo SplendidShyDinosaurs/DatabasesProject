@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs4347.jdbcProject.ecomm.dao.ProductDAO;
-import cs4347.jdbcProject.ecomm.entity.Address;
-import cs4347.jdbcProject.ecomm.entity.Customer;
 import cs4347.jdbcProject.ecomm.entity.Product;
 import cs4347.jdbcProject.ecomm.util.DAOException;
 
@@ -143,34 +141,25 @@ public class ProductDaoImpl implements ProductDAO
 
 	@Override
 	public Product retrieveByUPC(Connection connection, String upc) throws SQLException, DAOException {
-		if (upc == null) {
-			throw new DAOException("Trying to retrieve Product with a UPC that does not exist");
-		}
-		String selectQuery = "SELECT id, prodName, prodDescription, prodCategory FROM product where ProdUPC = ?";
-		PreparedStatement ps = null;
+		if (upc == null) { throw new DAOException("Trying to retrieve Product with a UPC that does not exist"); }
+		
+		PreparedStatement statement = null;
 		try {
-			ps = connection.prepareStatement(selectQuery);
-			ps.setString(1, upc);
-			ResultSet rs = ps.executeQuery();
-			if(!rs.next()) {
-				return null;
-			}
+			statement = connection.prepareStatement("SELECT id, prodName, prodDescription, prodCategory FROM product where prodUPC = ?;");
+			statement.setString(1, upc);
+			ResultSet result = statement.executeQuery();
+			if(!result.next()) { return null; }
 			
 			Product prod = new Product();
-			prod.setProdName((rs.getString("prodName")));
-			prod.setProdDescription(rs.getString("prodDescription"));
-			prod.setProdCategory(rs.getInt("prodCategory"));
-			prod.setProdUPC(rs.getString("prodUPC"));
-			prod.setId(rs.getLong("id"));
+			prod.setProdName((result.getString("prodName")));
+			prod.setProdDescription(result.getString("prodDescription"));
+			prod.setProdCategory(result.getInt("prodCategory"));
+			prod.setProdUPC(result.getString("prodUPC"));
+			prod.setId(result.getLong("id"));
 			return prod;
 		}
 		finally {
-			if (ps != null && !ps.isClosed()) {
-				ps.close();
-			}
-			if (connection != null && !connection.isClosed()) {
-				connection.close();
-			}
+			if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 	}
 

@@ -44,55 +44,38 @@ public class AddressDaoImpl implements AddressDAO
 		if (customerID == null) {
 			throw new DAOException("Trying to retrieve Address of with a customer ID that does not exist");
 		}
-		String selectQuery = "SELECT address1, address2, city, state, zipCode FROM address where customerID = ?";
-		PreparedStatement ps = null;
+		PreparedStatement statement = null;
 		try {
-			ps = connection.prepareStatement(selectQuery);
-			ps.setLong(1, customerID);
-			ResultSet rs = ps.executeQuery();
-			if(!rs.next()) {
-				return null;
-			}
+			statement = connection.prepareStatement("SELECT address1, address2, city, state, zipcode FROM address where customerID = ?");
+			statement.setLong(1, customerID);
+			ResultSet result = statement.executeQuery();
+			if(!result.next()) { return null; }
 			
 			Address addr = new Address();
-			addr.setAddress1((rs.getString("address1")));
-			addr.setAddress2(rs.getString("address2"));
-			addr.setCity(rs.getString("city"));
-			addr.setState(rs.getString("state"));
-			addr.setZipcode(rs.getString("zipcode"));
+			addr.setAddress1((result.getString("address1")));
+			addr.setAddress2(result.getString("address2"));
+			addr.setCity(result.getString("city"));
+			addr.setState(result.getString("state"));
+			addr.setZipcode(result.getString("zipcode"));
 			return addr;
 		}
 		finally {
-			if (ps != null && !ps.isClosed()) {
-				ps.close();
-			}
-			if (connection != null && !connection.isClosed()) {
-				connection.close();
-			}
+			if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 	}
 
 	@Override
 	public void deleteForCustomerID(Connection connection, Long customerID) throws SQLException, DAOException {
-		if (customerID == null) {
-			throw new DAOException("Trying to delete Address with NULL ID");
-		}
-		PreparedStatement ps = null;
-		String deleteSQL = "DELETE FROM CUSTOMER WHERE ID = ?;";
+		if (customerID == null) { throw new DAOException("Trying to delete Address with NULL ID"); }
+		
+		PreparedStatement statement = null;
 		try {
-			ps = connection.prepareStatement(deleteSQL);
-			ps.setLong(1, customerID);
-
-			int rows = ps.executeUpdate();
-			/* There was a return statement here, but because the function is void, it was deleted*/
+			statement = connection.prepareStatement("DELETE FROM CUSTOMER WHERE ID = ?;");
+			statement.setLong(1, customerID);
+			statement.executeUpdate();
 		}
 		finally {
-			if (ps != null && !ps.isClosed()) {
-				ps.close();
-			}
-			if (connection != null && !connection.isClosed()) {
-				connection.close();
-			}
+			if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 		
 	}

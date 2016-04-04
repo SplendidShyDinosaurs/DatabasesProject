@@ -70,7 +70,7 @@ public class CustomerPersistenceServiceTest
 		assertEquals(cust2.getId(), cust3.getId());
 		assertEquals(cust2.getFirstName(), cust3.getFirstName());
 		assertEquals(cust2.getLastName(), cust3.getLastName());
-		// assertTrue(cust2.getDob().equals(cust3.getDob()));
+		//assertTrue(cust2.getDob().equals(cust3.getDob()));
 		assertEquals(cust2.getGender(), cust3.getGender());
 		assertEquals(cust2.getEmail(), cust3.getEmail());
 		

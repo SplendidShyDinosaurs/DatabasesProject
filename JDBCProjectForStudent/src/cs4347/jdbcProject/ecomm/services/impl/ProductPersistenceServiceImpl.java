@@ -128,13 +128,12 @@ public class ProductPersistenceServiceImpl implements ProductPersistenceService
 
 	@Override
 	public Product retrieveByUPC(String upc) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		ProductDAO ProductDAO = new ProductDaoImpl();
+		ProductDAO productDAO = new ProductDaoImpl();
 		Connection connection = dataSource.getConnection();
 		
 		try {
 			connection.setAutoCommit(false);
-			Product prod = ProductDAO.retrieveByUPC(connection, upc);
+			Product prod = productDAO.retrieveByUPC(connection, upc);
 			connection.commit();
 			return prod;
 		}

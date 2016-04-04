@@ -33,7 +33,7 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 	 * 
 	 * Persists a new Customer instance by inserting new Customer, Address, 
 	 * and CreditCard instances. Notice the transactional nature of this 
-	 * method which inludes turning off autocommit at the start of the 
+	 * method which includes turning off autocommit at the start of the 
 	 * process, and rolling back the transaction if an exception 
 	 * is caught. 
 	 */
@@ -82,15 +82,11 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 	@Override
 	public Customer retrieve(Long id) throws SQLException, DAOException {
 		CustomerDAO customerDAO = new CustomerDaoImpl();
-		AddressDAO addressDAO = new AddressDaoImpl();
-		CreditCardDAO creditCardDAO = new CreditCardDaoImpl();
 		Connection connection = dataSource.getConnection();
 		
 		try {
 			connection.setAutoCommit(false);
 			Customer cust = customerDAO.retrieve(connection, id);
-			addressDAO.retrieveForCustomerID(connection, id);
-			creditCardDAO.retrieveForCustomerID(connection, id);
 			connection.commit();
 			return cust;
 		}
@@ -116,6 +112,7 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 		try {
 			connection.setAutoCommit(false);
 			int numUpdates = customerDAO.update(connection, customer);
+			connection.commit();
 			return numUpdates;
 		}
 		catch (Exception ex) {

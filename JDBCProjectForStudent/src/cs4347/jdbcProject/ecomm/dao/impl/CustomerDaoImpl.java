@@ -39,7 +39,7 @@ public class CustomerDaoImpl implements CustomerDAO
 		}catch(SQLException e){
 			throw new DAOException(e.getMessage());
 		}finally{
-			if(statement != null && !statement.isClosed()){ statement.close(); }
+			//if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 	}
 
