@@ -157,8 +157,9 @@ public class ProductDaoImpl implements ProductDAO
 			prod.setProdUPC(result.getString("prodUPC"));
 			prod.setId(result.getLong("id"));
 			return prod;
-		}
-		finally {
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally {
 			if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 	}

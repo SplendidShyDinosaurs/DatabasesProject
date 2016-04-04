@@ -58,8 +58,9 @@ public class AddressDaoImpl implements AddressDAO
 			addr.setState(result.getString("state"));
 			addr.setZipcode(result.getString("zipcode"));
 			return addr;
-		}
-		finally {
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally {
 			if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 	}
@@ -73,8 +74,9 @@ public class AddressDaoImpl implements AddressDAO
 			statement = connection.prepareStatement("DELETE FROM CUSTOMER WHERE ID = ?;");
 			statement.setLong(1, customerID);
 			statement.executeUpdate();
-		}
-		finally {
+		}catch(SQLException e){
+			throw new DAOException(e.getMessage());
+		}finally {
 			if(statement != null && !statement.isClosed()){ statement.close(); }
 		}
 		
