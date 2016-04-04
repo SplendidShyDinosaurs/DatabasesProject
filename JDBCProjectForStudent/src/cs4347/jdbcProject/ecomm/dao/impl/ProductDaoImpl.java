@@ -145,7 +145,7 @@ public class ProductDaoImpl implements ProductDAO
 		
 		PreparedStatement statement = null;
 		try {
-			statement = connection.prepareStatement("SELECT id, prodName, prodDescription, prodCategory FROM product WHERE prodUPC = ?;");
+			statement = connection.prepareStatement("SELECT id, prodName, prodDescription, prodCategory, prodUPC FROM product WHERE prodUPC = ?;");
 			statement.setString(1, upc);
 			ResultSet result = statement.executeQuery();
 			if(!result.next()) { return null; }

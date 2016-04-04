@@ -19,7 +19,7 @@ import cs4347.jdbcProject.ecomm.testing.DataSourceManager;
 public class PurchaseDaoTest
 {
 	// Need current customer ID from table CUSTOMER
-	Long customerID = 34l;
+	Long customerID = 1l;
 	// Need current product ID from table PRODUCT
 	Long productID = 1l;
 	

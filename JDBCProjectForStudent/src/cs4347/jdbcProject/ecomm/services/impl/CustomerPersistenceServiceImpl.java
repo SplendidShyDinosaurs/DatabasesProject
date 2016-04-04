@@ -2,6 +2,7 @@ package cs4347.jdbcProject.ecomm.services.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -82,12 +83,23 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 	@Override
 	public Customer retrieve(Long id) throws SQLException, DAOException {
 		CustomerDAO customerDAO = new CustomerDaoImpl();
+		CreditCardDAO creditcardDAO = new CreditCardDaoImpl();
+		AddressDAO addressDAO = new AddressDaoImpl();
+		
 		Connection connection = dataSource.getConnection();
 		
 		try {
 			connection.setAutoCommit(false);
 			Customer cust = customerDAO.retrieve(connection, id);
-			connection.commit();
+			Address address = addressDAO.retrieveForCustomerID(connection, id);
+			CreditCard creditCard = creditcardDAO.retrieveForCustomerID(connection, id);
+			
+			if (address == null) { throw new DAOException("Customers need an Address instance."); }
+			else{ cust.setAddress(address); }
+
+			if (creditCard == null) { throw new DAOException("Customers need aa CreditCard instance."); }
+			else { cust.setCreditCard(creditCard); }
+			
 			return cust;
 		}
 		catch (Exception ex) {
@@ -108,10 +120,34 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 	public int update(Customer customer) throws SQLException, DAOException {
 		CustomerDAO customerDAO = new CustomerDaoImpl();
 		Connection connection = dataSource.getConnection();
+		Address address = new Address();
+		CreditCard card = new CreditCard();
+		PreparedStatement statement1 = null;
+		PreparedStatement statement2 = null;
 		
 		try {
 			connection.setAutoCommit(false);
 			int numUpdates = customerDAO.update(connection, customer);
+			statement1 = connection.prepareStatement("UPDATE address SET address1 = ?, address2= ?, city = ?, state = ?, zipcode = ? WHERE customerID = ?;");
+			statement2 = connection.prepareStatement("UPDATE creditcard SET name = ?, ccNumber = ?, expDate = ?, securityCode = ? WHERE customerID = ?;");
+			
+			//Update address
+			statement1.setString(1, address.getAddress1());
+			statement1.setString(2, address.getAddress2());
+			statement1.setString(3, address.getCity());
+			statement1.setString(4, address.getState());
+			statement1.setString(5, address.getZipcode());
+			statement1.setLong(6, customer.getId());
+			statement1.executeUpdate();
+			
+			//update credit card
+			statement2.setString(1, card.getName());
+			statement2.setString(2, card.getCcNumber());
+			statement2.setString(3, card.getExpDate());
+			statement2.setString(4, card.getSecurityCode());
+			statement2.setLong(5, customer.getId());
+			statement2.executeUpdate();
+			
 			connection.commit();
 			return numUpdates;
 		}

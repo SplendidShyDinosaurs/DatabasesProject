@@ -151,7 +151,7 @@ public class CustomerDaoImpl implements CustomerDAO
 		try{
 			if(startDate == null || endDate == null){ throw new DAOException("Cannot retrieve a customer with a null date"); }
 			
-			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, email FROM customer where dob >= ? AND dob <= ?;");
+			statement = connection.prepareStatement("SELECT id, firstName, lastName, gender, dob, email FROM customer WHERE dob BETWEEN ? AND ?;");
 			statement.setDate(1, startDate);
 			statement.setDate(2, endDate);
 			ResultSet set = statement.executeQuery();
