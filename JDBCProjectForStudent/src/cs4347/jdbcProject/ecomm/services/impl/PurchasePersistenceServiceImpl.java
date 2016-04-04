@@ -9,14 +9,17 @@ import javax.sql.DataSource;
 import cs4347.jdbcProject.ecomm.dao.AddressDAO;
 import cs4347.jdbcProject.ecomm.dao.CreditCardDAO;
 import cs4347.jdbcProject.ecomm.dao.CustomerDAO;
+import cs4347.jdbcProject.ecomm.dao.ProductDAO;
 import cs4347.jdbcProject.ecomm.dao.PurchaseDAO;
 import cs4347.jdbcProject.ecomm.dao.impl.AddressDaoImpl;
 import cs4347.jdbcProject.ecomm.dao.impl.CreditCardDaoImpl;
 import cs4347.jdbcProject.ecomm.dao.impl.CustomerDaoImpl;
+import cs4347.jdbcProject.ecomm.dao.impl.ProductDaoImpl;
 import cs4347.jdbcProject.ecomm.dao.impl.PurchaseDaoImpl;
 import cs4347.jdbcProject.ecomm.entity.Address;
 import cs4347.jdbcProject.ecomm.entity.CreditCard;
 import cs4347.jdbcProject.ecomm.entity.Customer;
+import cs4347.jdbcProject.ecomm.entity.Product;
 import cs4347.jdbcProject.ecomm.entity.Purchase;
 import cs4347.jdbcProject.ecomm.services.PurchasePersistenceService;
 import cs4347.jdbcProject.ecomm.services.PurchaseSummary;
@@ -158,20 +161,77 @@ public class PurchasePersistenceServiceImpl implements PurchasePersistenceServic
 
 	@Override
 	public List<Purchase> retrieveForCustomerID(Long customerID) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		PurchaseDAO purchaseDAO = new purchaseDaoImpl();
+		Connection connection = dataSource.getConnection();
+		
+		try {
+			connection.setAutoCommit(false);
+			List<Purchase> purchList = PurchaseDAO.retrieveForCustomerID(connection, customerID);
+			connection.commit();
+			return purchlist;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
 	public PurchaseSummary retrievePurchaseSummary(Long customerID) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		PurchaseDAO purchaseDAO = new purchaseDaoImpl();
+		Connection connection = dataSource.getConnection();
+		
+		try {
+			connection.setAutoCommit(false);
+			List<Purchase> purchList = PurchaseDAO.retrievePurchaseSummary(connection, customerID);
+			connection.commit();
+			return purchlist;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
 	public List<Purchase> retrieveForProductID(Long productID) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		PurchaseDAO purchaseDAO = new purchaseDaoImpl();
+		Connection connection = dataSource.getConnection();
+		
+		try {
+			connection.setAutoCommit(false);
+			List<Purchase> purchList = PurchaseDAO.retrieveForProductID(connection, productID);
+			connection.commit();
+			return purchlist;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 }
